@@ -1,7 +1,6 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_ctrip/dao/home_dao.dart';
+import 'package:flutter_ctrip/widget/grid_nav.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 
 const APPBAR_SCROLL_OFFSET = 100;
@@ -39,12 +38,12 @@ class _HomePageState extends State<HomePage> {
   }
 
   loadData() {
-    HomeDao.fetch().then((result){
+    HomeDao.fetch().then((result) {
       /*setState(() {
         resultString = json.encode(result);
       });*/
       print(result);
-    }).catchError((e){
+    }).catchError((e) {
       setState(() {
         resultString = e.toString();
       });
@@ -81,6 +80,10 @@ class _HomePageState extends State<HomePage> {
                       },
                       pagination: SwiperPagination(),
                     ),
+                  ),
+                  GridNav(
+                    gridNavModel: null,
+                    name: 'jack',
                   ),
                   Container(
                     height: 800,
