@@ -12,12 +12,7 @@ class WebView extends StatefulWidget {
   final bool hideAppBar;
   final bool backForbid;
 
-  WebView(
-      {this.url,
-      this.statusBarColor,
-      this.title,
-      this.hideAppBar,
-      this.backForbid = false});
+  WebView({this.url, this.statusBarColor, this.title, this.hideAppBar, this.backForbid = false});
 
   @override
   _WebViewState createState() => _WebViewState();
@@ -35,8 +30,7 @@ class _WebViewState extends State<WebView> {
     super.initState();
     webviewReference.close();
     _onUrlChanged = webviewReference.onUrlChanged.listen((String url) {});
-    _onStateChanged =
-        webviewReference.onStateChanged.listen((WebViewStateChanged state) {
+    _onStateChanged = webviewReference.onStateChanged.listen((WebViewStateChanged state) {
       switch (state.type) {
         case WebViewState.startLoad:
           if (_isToMain(state.url) && !exiting) {
@@ -52,8 +46,7 @@ class _WebViewState extends State<WebView> {
           break;
       }
     });
-    _onHttpError =
-        webviewReference.onHttpError.listen((WebViewHttpError error) {
+    _onHttpError = webviewReference.onHttpError.listen((WebViewHttpError error) {
       print(error);
     });
   }
@@ -71,11 +64,11 @@ class _WebViewState extends State<WebView> {
 
   @override
   void dispose() {
-    super.dispose();
     _onUrlChanged.cancel();
     _onStateChanged.cancel();
     _onHttpError.cancel();
     webviewReference.dispose();
+    super.dispose();
   }
 
   @override
@@ -90,8 +83,7 @@ class _WebViewState extends State<WebView> {
     return Scaffold(
       body: Column(
         children: <Widget>[
-          _appBar(
-              Color(int.parse('0xff' + statusBarColorStr)), backButtonColor),
+          _appBar(Color(int.parse('0xff' + statusBarColorStr)), backButtonColor),
           Expanded(
             child: WebviewScaffold(
               url: widget.url,
@@ -116,11 +108,16 @@ class _WebViewState extends State<WebView> {
       );
     }
     return Container(
+      color: backgroundColor,
+      padding: EdgeInsets.fromLTRB(0, 40, 0, 10),
       child: FractionallySizedBox(
         widthFactor: 1,
         child: Stack(
           children: <Widget>[
             GestureDetector(
+              onTap: () {
+                Navigator.pop(context);
+              },
               child: Container(
                 margin: EdgeInsets.only(left: 10),
                 child: Icon(

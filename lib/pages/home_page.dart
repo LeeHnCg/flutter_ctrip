@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_ctrip/dao/home_dao.dart';
 import 'package:flutter_ctrip/model/common_model.dart';
+import 'package:flutter_ctrip/model/grid_nav_model.dart';
 import 'package:flutter_ctrip/model/home_model.dart';
 import 'package:flutter_ctrip/widget/grid_nav.dart';
 import 'package:flutter_ctrip/widget/local_nav.dart';
+import 'package:flutter_ctrip/widget/sub_nav.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 
 const APPBAR_SCROLL_OFFSET = 100;
@@ -20,7 +22,9 @@ class _HomePageState extends State<HomePage> {
     'https://dimg04.c-ctrip.com/images/700c10000000pdili7D8B_780_235_57.jpg'
   ];
   double appBarAlpha = 0;
-  List<CommonModel> localNavList =[];
+  List<CommonModel> localNavList = [];
+  GridNavModel gridNavModel;
+  List<CommonModel> subNavList = [];
 
   @override
   void initState() {
@@ -45,6 +49,8 @@ class _HomePageState extends State<HomePage> {
       HomeModel model = await HomeDao.fetch();
       setState(() {
         localNavList = model.localNavList;
+        gridNavModel = model.gridNav;
+        subNavList = model.subNavList;
       });
     } catch (e) {
       print(e);
@@ -62,8 +68,7 @@ class _HomePageState extends State<HomePage> {
             context: context,
             child: NotificationListener(
               onNotification: (scrollNotification) {
-                if (scrollNotification is ScrollUpdateNotification &&
-                    scrollNotification.depth == 0) {
+                if (scrollNotification is ScrollUpdateNotification && scrollNotification.depth == 0) {
                   _onScroll(scrollNotification.metrics.pixels);
                 }
               },
@@ -86,6 +91,14 @@ class _HomePageState extends State<HomePage> {
                   Padding(
                     padding: EdgeInsets.fromLTRB(8, 4, 8, 4),
                     child: LocalNav(localNavList: localNavList),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(8, 0, 8, 4),
+                    child: GridNav(gridNavModel: gridNavModel),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(8,0,8,4),
+                    child: SubNav(subNavList: subNavList,),
                   ),
                   Container(
                     height: 800,
