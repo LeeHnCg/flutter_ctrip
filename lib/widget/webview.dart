@@ -23,7 +23,7 @@ class _WebViewState extends State<WebView> {
   StreamSubscription<String> _onUrlChanged;
   StreamSubscription<WebViewStateChanged> _onStateChanged;
   StreamSubscription<WebViewHttpError> _onHttpError;
-  bool exiting = false;
+  bool _exiting = false;
 
   @override
   void initState() {
@@ -33,12 +33,12 @@ class _WebViewState extends State<WebView> {
     _onStateChanged = webviewReference.onStateChanged.listen((WebViewStateChanged state) {
       switch (state.type) {
         case WebViewState.startLoad:
-          if (_isToMain(state.url) && !exiting) {
+          if (_isToMain(state.url) && !_exiting) {
             if (widget.backForbid) {
               webviewReference.launch(widget.url);
             } else {
               Navigator.pop(context);
-              exiting = true;
+              _exiting = true;
             }
           }
           break;

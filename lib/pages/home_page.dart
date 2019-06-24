@@ -126,10 +126,7 @@ class _HomePageState extends State<HomePage> {
               NavigatorUtil.push(
                   context, WebView(url: model.url, title: model.title, hideAppBar: model.hideAppBar));
             },
-            child: Image.network(
-              _bannerList[index].icon,
-              fit: BoxFit.fill,
-            ),
+            child: Image.network(_bannerList[index].icon, fit: BoxFit.fill),
           );
         },
         pagination: SwiperPagination(),
