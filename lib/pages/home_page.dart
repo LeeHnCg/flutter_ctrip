@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ctrip/dao/home_dao.dart';
 import 'package:flutter_ctrip/model/common_model.dart';
@@ -10,11 +9,13 @@ import 'package:flutter_ctrip/widget/grid_nav.dart';
 import 'package:flutter_ctrip/widget/loading_container.dart';
 import 'package:flutter_ctrip/widget/local_nav.dart';
 import 'package:flutter_ctrip/widget/sales_box.dart';
+import 'package:flutter_ctrip/widget/search_bar.dart';
 import 'package:flutter_ctrip/widget/sub_nav.dart';
 import 'package:flutter_ctrip/widget/webview.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 
 const APPBAR_SCROLL_OFFSET = 100;
+const SEARCH_BAR_DEFAULT_TEXT = '我是你爸爸';
 
 class HomePage extends StatefulWidget {
   @override
@@ -22,7 +23,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  double appBarAlpha = 0;
+  double _appBarAlpha = 0;
   List<CommonModel> _bannerList = [];
   List<CommonModel> _localNavList = [];
   List<CommonModel> _subNavList = [];
@@ -44,7 +45,7 @@ class _HomePageState extends State<HomePage> {
       alpha = 1;
     }
     setState(() {
-      appBarAlpha = alpha;
+      _appBarAlpha = alpha;
     });
   }
 
@@ -98,18 +99,35 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget get _appBar {
-    return Opacity(
-      opacity: appBarAlpha,
-      child: Container(
-        height: 80,
-        decoration: BoxDecoration(color: Colors.white),
-        child: Center(
-          child: Padding(
+    return Column(
+      children: <Widget>[
+        Container(
+          decoration: BoxDecoration(
+              gradient: LinearGradient(
+            colors: [Color(0x66000000), Colors.transparent],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          )),
+          child: Container(
             padding: EdgeInsets.only(top: 20),
-            child: Text('首页'),
+            height: 80.0,
+            decoration: BoxDecoration(color: Color.fromARGB((_appBarAlpha * 255).toInt(), 255, 255, 255)),
+            child: SearchBar(
+              searchBarType: _appBarAlpha > 0.2 ? SearchBarType.homeLight : SearchBarType.home,
+              inputBoxClick: _jumpToSearch,
+              speakClick: _jumpToSpeak,
+              defaultText: SEARCH_BAR_DEFAULT_TEXT,
+              leftButtonClick: () {},
+            ),
           ),
         ),
-      ),
+        Container(
+          height: _appBarAlpha>0.2?0.5:0,
+          decoration: BoxDecoration(
+            boxShadow: [BoxShadow(color: Colors.black87, blurRadius: 1)]
+          ),
+        )
+      ],
     );
   }
 
@@ -148,4 +166,8 @@ class _HomePageState extends State<HomePage> {
       ],
     );
   }
+
+  _jumpToSearch() {}
+
+  _jumpToSpeak() {}
 }
